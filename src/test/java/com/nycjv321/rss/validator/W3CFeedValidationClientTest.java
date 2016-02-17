@@ -4,13 +4,19 @@ import org.testng.annotations.Test;
 
 import java.net.URL;
 
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
  * Created by Javier L. Velasquez on 12/10/15.
  */
 public class W3CFeedValidationClientTest {
+
+        @Test
+        public void validate() throws Exception {
+                W3CFeedValidationClient client = new TestW3CFeedValidationClient(new URL("http://www.feedforall.com/sample.xml"));
+                final FeedValidationResponse validate = client.validate();
+                assertTrue(validate.isValid()); // the test xml we are using passes validation but contains warnings.
+        }
 
     // We don't really care about the request at a given point in time.
     // We override the response to test that we are able to properly deserialize an already known payload.
@@ -92,12 +98,5 @@ public class W3CFeedValidationClientTest {
                     "    </env:Body>\n" +
                     "</env:Envelope>";
         }
-    }
-
-    @Test
-    public void validate() throws Exception {
-        W3CFeedValidationClient client = new TestW3CFeedValidationClient(new URL("http://www.feedforall.com/sample.xml"));
-        final FeedValidationResponse validate = client.validate();
-        assertTrue(validate.isValid()); // the test xml we are using fails validation.
     }
 }
